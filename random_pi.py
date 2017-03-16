@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 import math
 from fractions import gcd
-from random import randint
+from random    import randint
 import sys, getopt
 
 def main(argv):
