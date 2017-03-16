@@ -4,6 +4,12 @@ from fractions import gcd
 from random    import randint
 import sys, getopt
 
+def coprime(a, b):
+  if gcd(a, b) == 1:
+    return True
+  else:
+    return False
+
 def main(argv):
   iterations = 1000
   limit      = 1000
@@ -33,7 +39,7 @@ def main(argv):
   while step < iterations:
     a = randint(1, limit)
     b = randint(1, limit)
-    if gcd(a, b) == 1:
+    if coprime(a, b):
       coprimes += 1
     step += 1
 
