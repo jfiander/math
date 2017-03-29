@@ -1,24 +1,31 @@
 #!/usr/local/bin/python3
 import sys, getopt, math
 
-def main(argv):
-  try:
-    opts, args = getopt.getopt(argv, "n:mv")
-  except getopt.GetoptError as e:
-    print('Invalid option:', e)
-    sys.exit(1)
-
+def fibonacci(argv):
   n         = 1
   verbose   = False
   magnitude = False
 
-  for opt, arg in opts:
-    if opt == '-n':
-      n = int(arg)
-    elif opt == '-v':
-      verbose = True
-    elif opt == '-m':
-      magnitude = True
+  if type(argv) is list:
+    argument_is_int = False
+  else:
+    argument_is_int = True
+    n = int(argv)
+
+  if not(argument_is_int):
+    try:
+      opts, args = getopt.getopt(argv, "n:mv")
+    except getopt.GetoptError as e:
+      print('Invalid option:', e)
+      sys.exit(1)
+
+    for opt, arg in opts:
+      if opt == '-n':
+        n = int(arg)
+      elif opt == '-v':
+        verbose = True
+      elif opt == '-m':
+        magnitude = True
 
   fibonacci = [0, 1]
 
@@ -42,7 +49,7 @@ def main(argv):
       print('')
       print("fib(" + str(n) + ") = " + str(fibonacci[-1]))
     else:
-      print(fibonacci[-1])
+      return fibonacci[-1]
 
 if __name__ == "__main__":
-  main(sys.argv[1:])
+  print(fibonacci(sys.argv[1:]))
