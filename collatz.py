@@ -1,5 +1,5 @@
 #!/usr/local/bin/python3
-import sys, getopt, math
+import sys, getopt, math, random
 from colorize_num import colorize_num
 
 def track(list, item, color=False):
@@ -84,7 +84,7 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet
 
 def main(argv):
   try:
-    opts, args = getopt.getopt(argv, "n:tcpxqs", ["number", "clean", "tree", "color", "negative", "quiet", "skip"])
+    opts, args = getopt.getopt(argv, "n:tcpxqsr:", ["number", "clean", "tree", "color", "negative", "quiet", "skip", "random="])
   except getopt.GetoptError as e:
     print('Invalid option:', e)
     sys.exit(1)
@@ -96,11 +96,11 @@ def main(argv):
   negative    = False
   quiet       = False
   skip_divide = False
+  rand_num    = False
 
   for opt, arg in opts:
     if (opt == '-n') or (opt[2:] == 'number'):
       n = int(arg)
-      original_n = int(n)
     elif (opt == '-t') or (opt[2:] == 'tree'):
       tree = True
     elif (opt == '-c') or (opt[2:] == 'clean'):
@@ -113,6 +113,9 @@ def main(argv):
       quiet = True
     elif (opt == '-s') or (opt[2:] == 'skip'):
       skip_divide = True
+    elif (opt == '-r') or (opt[2:] == 'random'):
+      n = random.randrange(2, int(arg))
+    original_n = int(n)
 
   steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative, quiet=quiet, skip_divide=skip_divide)
 
