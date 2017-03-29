@@ -13,7 +13,7 @@ def track(list, item, color=False):
   if len(list) > 100:
     list.pop(0)
 
-def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet=False):
+def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet=False, skip_divide=False):
   steps        = 0
   last_hundred = [n]
   if not(quiet):
@@ -29,33 +29,41 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet
         print('0 :', n)
   try:
     while n > 1:
-      while n % 2 == 0:
+      if not(skip_divide):
+        while n % 2 == 0:
+          if (((n & (n - 1)) == 0) and n != 0):
+            power = int(math.log(n, 2))
+            if not(quiet):
+              print('Power of 2:', n, '('+str(power)+')')
+            return steps + power
+          n = n // 2
+          track(last_hundred, n, color=color)
+          steps += 1
+          if not(quiet):
+            if tree:
+              if clean:
+                if color:
+                  print(colorize_num(n))
+                else:
+                  print(n)
+              else:
+                if color:
+                  print(steps, ':', colorize_num(n))
+                else:
+                  print(steps, ':', n)
+      else:
         if (((n & (n - 1)) == 0) and n != 0):
           power = int(math.log(n, 2))
           if not(quiet):
             print('Power of 2:', n, '('+str(power)+')')
           return steps + power
-        n = n // 2
-        track(last_hundred, n, color=color)
-        steps += 1
-        if not(quiet):
-          if tree:
-            if clean:
-              if color:
-                print(colorize_num(n))
-              else:
-                print(n)
-            else:
-              if color:
-                print(steps, ':', colorize_num(n))
-              else:
-                print(steps, ':', n)
       if n > 1:
         if negative:
           n = (n * 3) - 1
         else:
           n = (n * 3) + 1
-        track(last_hundred, n, color=color)
+          if not(skip_divide):
+            track(last_hundred, n, color=color)
         steps += 1
         if not(quiet):
           if tree:
@@ -76,17 +84,18 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet
 
 def main(argv):
   try:
-    opts, args = getopt.getopt(argv, "n:tcpxq", ["number", "clean", "tree", "color", "negative", "quiet"])
+    opts, args = getopt.getopt(argv, "n:tcpxqs", ["number", "clean", "tree", "color", "negative", "quiet", "skip"])
   except getopt.GetoptError as e:
     print('Invalid option:', e)
     sys.exit(1)
 
-  n        = 1
-  tree     = False
-  clean    = False
-  color    = False
-  negative = False
-  quiet    = False
+  n           = 1
+  tree        = False
+  clean       = False
+  color       = False
+  negative    = False
+  quiet       = False
+  skip_divide = False
 
   for opt, arg in opts:
     if (opt == '-n') or (opt[2:] == 'number'):
@@ -102,8 +111,10 @@ def main(argv):
       negative = True
     elif (opt == '-q') or (opt[2:] == 'quiet'):
       quiet = True
+    elif (opt == '-s') or (opt[2:] == 'skip'):
+      skip_divide = True
 
-  steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative, quiet=quiet)
+  steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative, quiet=quiet, skip_divide=skip_divide)
 
   if not(quiet):
     print('Reached 1.')
