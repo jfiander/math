@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 import sys, getopt, math
 
-def colorize_num(n=''):
+def colorize_num(n):
   reset     = r'\033[0m'
   underline = r'\033[4m'
   red       = r'\033[31m'
@@ -15,6 +15,10 @@ def colorize_num(n=''):
   b_green   = r'\033[92m'
   b_yellow  = r'\033[93m'
   output    = ""
+  if int(n) < 0:
+    negative = True
+  else:
+    negative = False
   num_list  = list(str(n))
   for num in num_list:
     if num == '1':
@@ -38,9 +42,11 @@ def colorize_num(n=''):
     elif num == '0':
       output = output + gray + num
   output = output + reset
+  if negative:
+    output = "-" + output
   return output.encode('utf-8').decode('unicode_escape')
 
-def check_collatz(n, tree=False, clean=False, color=False):
+def check_collatz(n, tree=False, clean=False, color=False, negative=False):
   steps = 0
   if clean:
     if color:
@@ -72,7 +78,10 @@ def check_collatz(n, tree=False, clean=False, color=False):
           else:
             print(steps, ':', n)
     if n > 1:
-      n = (n * 3) + 1
+      if negative:
+        n = (n * 3) - 1
+      else:
+        n = (n * 3) + 1
       steps += 1
       if tree:
         if clean:
@@ -88,15 +97,16 @@ def check_collatz(n, tree=False, clean=False, color=False):
 
 def main(argv):
   try:
-    opts, args = getopt.getopt(argv, "n:tcp", ["color"])
+    opts, args = getopt.getopt(argv, "n:tcpx", ["color", "negative"])
   except getopt.GetoptError as e:
     print('Invalid option:', e)
     sys.exit(1)
 
-  n     = 1
-  tree  = False
-  clean = False
-  color = False
+  n        = 1
+  tree     = False
+  clean    = False
+  color    = False
+  negative = False
 
   for opt, arg in opts:
     if (opt == '-n') or (opt[2:] == 'number'):
@@ -107,8 +117,10 @@ def main(argv):
       clean = True
     elif (opt == '-p') or (opt[2:] == 'color'):
       color = True
+    elif (opt == '-x') or (opt[2:] == 'negative'):
+      negative = True
 
-  steps = check_collatz(n, tree=tree, clean=clean, color=color)
+  steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative)
 
   print('Steps to reach 1:', steps)
 
