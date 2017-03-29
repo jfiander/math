@@ -44,7 +44,7 @@ def colorize_num(n):
   output = output + reset
   if negative:
     output = "-" + output
-  print(output.encode('utf-8').decode('unicode_escape'))
+  return output.encode('utf-8').decode('unicode_escape')
 
 if __name__ == "__main__":
-  colorize_num("".join(sys.argv[1:]))
+  print(colorize_num("".join(sys.argv[1:])))
