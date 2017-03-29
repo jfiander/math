@@ -14,6 +14,8 @@ def track(list, item, color=False):
     list.pop(0)
 
 def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet=False, skip_divide=False):
+  if n == 1:
+    return 0
   steps        = 0
   last_hundred = [n]
   if not(quiet):
