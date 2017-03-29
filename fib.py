@@ -51,5 +51,16 @@ def fibonacci(argv):
     else:
       return fibonacci[-1]
 
+def fibonacci_chain(cap = 1):
+  steps  = 1
+  output = ""
+  while steps < (cap + 1):
+    steps += 1
+    output = output + str(fibonacci(steps))
+  return output
+
 if __name__ == "__main__":
-  print(fibonacci(sys.argv[1:]))
+  if sys.argv[1] == "chain":
+    print(fibonacci_chain(int(sys.argv[2])))
+  else:
+    print(fibonacci(sys.argv[1:]))
