@@ -151,7 +151,10 @@ def main(argv):
 
   if not(quiet):
     print('Reached 1.')
-  print('collatz(' + str(original_n) + ') =', steps)
+  if negative:
+    print('collatz[neg](' + str(original_n) + ') =', steps)
+  else:
+    print('collatz(' + str(original_n) + ') =', steps)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
