@@ -58,42 +58,46 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False):
       print('0 :', colorize_num(n))
     else:
       print('0 :', n)
-  while n > 1:
-    while n % 2 == 0:
-      if (((n & (n - 1)) == 0) and n != 0):
-        power = int(math.log(n, 2))
-        print('Power of 2:', n, '('+str(power)+')')
-        return steps + power
-      n = n // 2
-      steps += 1
-      if tree:
-        if clean:
-          if color:
-            print(colorize_num(n))
+  try:
+    while n > 1:
+      while n % 2 == 0:
+        if (((n & (n - 1)) == 0) and n != 0):
+          power = int(math.log(n, 2))
+          print('Power of 2:', n, '('+str(power)+')')
+          return steps + power
+        n = n // 2
+        steps += 1
+        if tree:
+          if clean:
+            if color:
+              print(colorize_num(n))
+            else:
+              print(n)
           else:
-            print(n)
+            if color:
+              print(steps, ':', colorize_num(n))
+            else:
+              print(steps, ':', n)
+      if n > 1:
+        if negative:
+          n = (n * 3) - 1
         else:
-          if color:
-            print(steps, ':', colorize_num(n))
+          n = (n * 3) + 1
+        steps += 1
+        if tree:
+          if clean:
+            if color:
+              print(colorize_num(n))
+            else:
+              print(n)
           else:
-            print(steps, ':', n)
-    if n > 1:
-      if negative:
-        n = (n * 3) - 1
-      else:
-        n = (n * 3) + 1
-      steps += 1
-      if tree:
-        if clean:
-          if color:
-            print(colorize_num(n))
-          else:
-            print(n)
-        else:
-          if color:
-            print(steps, ':', colorize_num(n))
-          else:
-            print(steps, ':', n)
+            if color:
+              print(steps, ':', colorize_num(n))
+            else:
+              print(steps, ':', n)
+  except KeyboardInterrupt:
+    print('\033[0m' + 'Exiting.')
+    sys.exit(0)
 
 def main(argv):
   try:
