@@ -1,5 +1,5 @@
 #!/usr/local/bin/python3
-import sys, getopt, math
+import sys, getopt, math, random
 
 def fibonacci(argv):
   n         = 1
@@ -51,9 +51,11 @@ def fibonacci(argv):
     else:
       return fibonacci[-1]
 
-def fibonacci_chain(cap = 1):
+def fibonacci_chain(cap = "random"):
   steps  = 1
   output = ""
+  if cap == "random":
+    cap = random.randrange(10, 50)
   while steps < (cap + 1):
     steps += 1
     output = output + str(fibonacci(steps))
@@ -61,6 +63,9 @@ def fibonacci_chain(cap = 1):
 
 if __name__ == "__main__":
   if sys.argv[1] == "chain":
-    print(fibonacci_chain(int(sys.argv[2])))
+    if sys.argv[2:] == []:
+      print(fibonacci_chain())
+    else:
+      print(fibonacci_chain(int(sys.argv[2])))
   else:
     print(fibonacci(sys.argv[1:]))
