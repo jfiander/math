@@ -117,7 +117,7 @@ def main(argv):
       skip_divide = True
     elif (opt == '-r') or (opt[2:] == 'random'):
       n = random.randrange(2, int(arg))
-    original_n = int(n)
+  original_n = int(n)
 
   steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative, quiet=quiet, skip_divide=skip_divide)
 
