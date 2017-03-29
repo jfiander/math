@@ -85,7 +85,7 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet
       print('\033[0m' + 'Exiting.')
     sys.exit(0)
 
-def main(argv):
+def collatz(argv):
   try:
     opts, args = getopt.getopt(argv, "n:tcpxqsr:l", ["number", "clean", "tree", "color", "negative", "quiet", "skip", "random=", "log-time"])
   except getopt.GetoptError as e:
@@ -139,4 +139,4 @@ def main(argv):
     print("Took:", datetime.now() - start_time)
 
 if __name__ == "__main__":
-  main(sys.argv[1:])
+  collatz(sys.argv[1:])
