@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 import sys, getopt, math, random
+from datetime import datetime
 from colorize_num import colorize_num
 
 def track(list, item, color=False):
@@ -86,7 +87,7 @@ def check_collatz(n, tree=False, clean=False, color=False, negative=False, quiet
 
 def main(argv):
   try:
-    opts, args = getopt.getopt(argv, "n:tcpxqsr:", ["number", "clean", "tree", "color", "negative", "quiet", "skip", "random="])
+    opts, args = getopt.getopt(argv, "n:tcpxqsr:l", ["number", "clean", "tree", "color", "negative", "quiet", "skip", "random=", "log-time"])
   except getopt.GetoptError as e:
     print('Invalid option:', e)
     sys.exit(1)
@@ -99,6 +100,7 @@ def main(argv):
   quiet       = False
   skip_divide = False
   rand_num    = False
+  log_time    = False
 
   for opt, arg in opts:
     if (opt == '-n') or (opt[2:] == 'number'):
@@ -117,8 +119,12 @@ def main(argv):
       skip_divide = True
     elif (opt == '-r') or (opt[2:] == 'random'):
       n = random.randrange(2, int(arg))
+    elif (opt == '-l') or (opt[2:] == 'log-time'):
+      log_time = True
   original_n = int(n)
 
+  if log_time:
+    start_time = datetime.now()
   steps = check_collatz(n, tree=tree, clean=clean, color=color, negative=negative, quiet=quiet, skip_divide=skip_divide)
 
   if not(quiet):
@@ -127,6 +133,10 @@ def main(argv):
     print('collatz[neg](' + str(original_n) + ') =', steps)
   else:
     print('collatz(' + str(original_n) + ') =', steps)
+
+  if log_time:
+    print('')
+    print("Took:", datetime.now() - start_time)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
